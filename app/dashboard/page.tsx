@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getDashboardData } from "@/lib/dashboard";
+import Image from "next/image";
 import LogoutButton from "./logout-button";
 import CoursesManager from "./courses-manager";
 import DashboardSidebar from "./sidebar";
@@ -324,7 +325,10 @@ export default async function DashboardPage({
         <div className="dashboard-main">
           <header className="dashboard-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, marginBottom: 20, flexWrap: "wrap" }}>
             <div>
-              <p style={{ color: "#2563eb", fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" }}>Schedulia</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <Image src="/schedulia-logo.svg" alt="Logo Schedulia" width={48} height={48} style={{ width: 48, height: 48, objectFit: "contain" }} />
+                <p style={{ color: "#2563eb", fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", margin: 0 }}>Schedulia</p>
+              </div>
               {roleKey === "DOSEN" ? (
                 <h1 style={{ fontSize: "2.2rem", margin: "8px 0 0" }}>
                   Selamat datang, {currentUser?.name ?? "Dosen"}

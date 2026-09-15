@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const roleStyles = {
@@ -89,21 +90,17 @@ export default function DashboardSidebar({
           marginBottom: 18,
         }}
       >
-        <div
+        <Image
+          src="/schedulia-logo.svg"
+          alt="Logo Schedulia"
+          width={collapsed ? 48 : 58}
+          height={collapsed ? 48 : 58}
           style={{
-            width: 42,
-            height: 42,
-            borderRadius: 14,
-            background: style.gradient,
-            display: "grid",
-            placeItems: "center",
-            color: "white",
-            fontSize: 20,
-            boxShadow: `0 10px 20px ${style.accent}33`,
+            width: collapsed ? 48 : 58,
+            height: collapsed ? 48 : 58,
+            objectFit: "contain",
           }}
-        >
-          {role === "ADMIN" ? "A" : role === "DOSEN" ? "D" : "M"}
-        </div>
+        />
 
         {!collapsed && (
           <div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 import { useState } from "react";
 
 const roleLabels: Record<string, string> = {
@@ -328,16 +329,15 @@ export default function LoginContent() {
         >
           {/* Logo & Title Section */}
           <div className="logo-section" style={{ textAlign: "center", marginBottom: 32 }}>
-            <div
+            <Image
+              src="/schedulia-logo.svg"
+              alt="Logo Schedulia"
+              width={124}
+              height={124}
               className="role-badge"
-              style={{
-                fontSize: "3rem",
-                marginBottom: 12,
-                display: "inline-block",
-              }}
-            >
-              {roleConfig.icon}
-            </div>
+              style={{ width: 124, height: 124, objectFit: "contain", marginBottom: 10 }}
+              priority
+            />
             <p
               style={{
                 color: roleConfig.primary,

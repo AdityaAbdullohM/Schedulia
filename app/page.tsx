@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const roles = [
   {
@@ -166,6 +167,14 @@ export default function HomePage() {
           {/* Header */}
           <div className="hero-section" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 60, gap: 24, flexWrap: "wrap" }}>
             <div>
+              <Image
+                src="/schedulia-logo.svg"
+                alt="Logo Schedulia"
+                width={96}
+                height={96}
+                style={{ width: 96, height: 96, objectFit: "contain", marginBottom: 16 }}
+                priority
+              />
               <p style={{ fontSize: 14, letterSpacing: 3, textTransform: "uppercase", color: "#2563eb", marginBottom: 12, fontWeight: 700 }}>✨ Schedulia Platform</p>
               <h1 style={{ fontSize: "clamp(2.2rem, 6vw, 4.5rem)", lineHeight: 1.1, margin: 0, marginBottom: 16, fontWeight: 900, background: "linear-gradient(135deg, #fff 0%, #93c5fd 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                 Penjadwalan Mata Kuliah Modern
