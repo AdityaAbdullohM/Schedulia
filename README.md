@@ -16,7 +16,6 @@ Schedulia dibangun untuk tiga jenis pengguna: **Admin**, **Dosen**, dan **Mahasi
 - [Teknologi](#teknologi)
 - [Menjalankan Secara Lokal](#menjalankan-secara-lokal)
 - [Menyiapkan Database](#menyiapkan-database)
-- [Akun Demo](#akun-demo)
 - [Deployment ke Vercel](#deployment-ke-vercel)
 - [Struktur Proyek](#struktur-proyek)
 - [Perintah yang Tersedia](#perintah-yang-tersedia)
@@ -117,17 +116,6 @@ npx prisma studio
 Buka [http://localhost:5555](http://localhost:5555).
 
 > `DATABASE_URL` di `.env` menentukan database yang ditampilkan Prisma Studio. Pastikan URL tersebut menunjuk ke database yang sama dengan yang digunakan aplikasi.
-
-## Akun Demo
-
-Script setup membuat akun admin berikut:
-
-| Role | Email | Password |
-| --- | --- | --- |
-| Admin | `admin@schedulia.id` | `password123` |
-| Admin | `admin.siti@schedulia.id` | `adminPass456` |
-
-Segera ganti password demo untuk penggunaan nyata. Jangan menaruh password production di source code atau dokumentasi publik.
 
 ## Deployment ke Vercel
 
