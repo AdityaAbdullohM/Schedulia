@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  DOSEN
+  MAHASISWA
+}
+
+model User {
+  id              String       @id @default(cuid())
+  name            String
+  email           String       @unique
+  passwordHash    String
+  role            Role
+  nip             String?      @unique
+  nim             String?      @unique
+  angkatan        Int?
+  classGroupId    String?
+  programStudyId  String?
+  status          String       @default("Aktif")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  schedules       ClassSchedule[] @relation("LecturerSchedules")
+  enrollments     Enrollment[]
+  dosenCourses    DosenCourse[]
+  announcements   Announcement[]
+  announcementReplies AnnouncementReply[]
+  classGroup      ClassGroup?  @relation(fields: [classGroupId], references: [id])
+  programStudy    ProgramStudy? @relation(fields: [programStudyId], references: [id])
+}
+
+model ProgramStudy {
+  id          String      @id @default(cuid())
+  code        String      @unique
+  name        String      @unique
+  degree      String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  courses     Course[]
+  classGroups ClassGroup[]
+  dosenUsers  User[]
+}
+
+model Course {
+  id            String         @id @default(cuid())
+  code          String         @unique
+  title         String
+  credits       Int
+  semester      Int
+  angkatan      Int?
+  department    String?
+  programStudyId String?
+  schedules     ClassSchedule[]
+  dosenCourses  DosenCourse[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  programStudy  ProgramStudy?  @relation(fields: [programStudyId], references: [id])
+}
+
+model ClassGroup {
+  id            String        @id @default(cuid())
+  code          String        @unique
+  name          String
+  cohort        String
+  programStudyId String
+  programStudy  ProgramStudy  @relation(fields: [programStudyId], references: [id], onDelete: Cascade)
+  students      User[]
+  schedules     ClassSchedule[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Classroom {
+  id        String          @id @default(cuid())
+  name      String          @unique
+  capacity  Int
+  schedules ClassSchedule[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model ClassSchedule {
+  id          String      @id @default(cuid())
+  courseId    String
+  lecturerId  String
+  classroomId String
+  classGroupId String?
+  day         String
+  startTime   String
+  endTime     String
+  semester    String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  course      Course      @relation(fields: [courseId], references: [id])
+  lecturer    User        @relation("LecturerSchedules", fields: [lecturerId], references: [id])
+  classroom   Classroom   @relation(fields: [classroomId], references: [id])
+  classGroup  ClassGroup? @relation(fields: [classGroupId], references: [id], onDelete: SetNull)
+  enrollments Enrollment[]
+  announcements Announcement[]
+}
+
+model Enrollment {
+  id             String        @id @default(cuid())
+  studentId      String
+  classScheduleId String
+  status         String        @default("AKTIF")
+  createdAt      DateTime      @default(now())
+
+  student        User          @relation(fields: [studentId], references: [id])
+  classSchedule  ClassSchedule @relation(fields: [classScheduleId], references: [id])
+  attendanceRecords Attendance[]
+
+  @@unique([studentId, classScheduleId])
+}
+
+model Attendance {
+  id           String     @id @default(cuid())
+  enrollmentId String
+  meeting      Int
+  status       String
+  notes        String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+
+  @@unique([enrollmentId, meeting])
+  @@index([enrollmentId])
+}
+
+model Announcement {
+  id             String              @id @default(cuid())
+  classScheduleId String
+  lecturerId     String
+  content        String
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  classSchedule ClassSchedule       @relation(fields: [classScheduleId], references: [id], onDelete: Cascade)
+  lecturer      User                @relation(fields: [lecturerId], references: [id], onDelete: Cascade)
+  replies       AnnouncementReply[]
+
+  @@index([classScheduleId])
+}
+
+model AnnouncementReply {
+  id             String       @id @default(cuid())
+  announcementId String
+  studentId      String
+  content        String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  student      User         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([announcementId])
+  @@index([studentId])
+}
+
+model DosenCourse {
+  id        String    @id @default(cuid())
+  dosenId   String
+  courseId  String
+  createdAt DateTime  @default(now())
+
+  dosen     User      @relation(fields: [dosenId], references: [id], onDelete: Cascade)
+  course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([dosenId, courseId])
+}
