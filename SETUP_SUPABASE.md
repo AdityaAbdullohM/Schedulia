@@ -69,7 +69,7 @@ postgresql://postgres:[PASSWORD]@db.tifuqojweqbmhwgldiut.supabase.co:5432/postgr
 
 Update `.env`:
 ```
-DATABASE_URL="postgresql://postgres:uvtTmNR2h8nOY7Eb@db.tifuqojweqbmhwgldiut.supabase.co:5432/postgres?sslmode=require"
+DATABASE_URL="postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres?sslmode=require"
 ```
 
 Lalu jalankan:
